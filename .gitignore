@@ -1,0 +1,5 @@
+out/
+build/
+handins/
+handin-builds/
+third-party/cmocka
