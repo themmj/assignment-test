@@ -9,29 +9,33 @@ abort() {
 # assert pwd to be repository root
 project_root="$PWD"
 [[ "$project_root" == *assignment-test ]] || abort "please run this script from the repository root"
-handin_repos_root="$project_root/handins"
+submission_repos_root="$project_root/submissions"
 
 source ./assignment.conf
 
-current_handin=0
-handin_zips=()
-for filename in $handin_zips_location/*; do
-    [[ "$filename" == *.zip ]] && handin_zips+=("$filename")
+# setup wraps
+
+# gather all available zip files
+submission_zips=()
+for filename in $submission_zips_location/*; do
+    [[ "$filename" == *.zip ]] && submission_zips+=("$filename")
 done
-echo "processing ${#handin_zips[@]} handins"
+echo "processing ${#submission_zips[@]} submissions"
 
-mkdir -p "$handin_repos_root"
-for zip_file in "${handin_zips[@]}"; do
-    echo "processing handin $current_handin associated with $zip_file"
-    current_handin_repo_dir="$handin_repos_root/$current_handin"
-    ((current_handin++))
+# loop over all zips
+current_submission=0
+mkdir -p "$submission_repos_root"
+for zip_file in "${submission_zips[@]}"; do
+    echo "processing submission $current_submission associated with $zip_file"
+    current_submission_repo_dir="$submission_repos_root/$current_submission"
+    ((current_submission++))
 
-    echo "moving zip contents to $current_handin_repo_dir"
-    mkdir -p "$current_handin_repo_dir"
-    unzip "$zip_file" -d "$current_handin_repo_dir" > /dev/null
-    [ $? -eq 0 ] || abort "error during unzipping of handin"
+    echo "moving zip contents to $current_submission_repo_dir"
+    mkdir -p "$current_submission_repo_dir"
+    unzip "$zip_file" -d "$current_submission_repo_dir" > /dev/null
+    [ $? -eq 0 ] || abort "error during unzipping of submission"
 
-    cd "$current_handin_repo_dir" && commit_user_name="$(git log -1 | grep Author | cut -d "<" -f 1 | cut -c 9-)" && cd - || abort "unable to extract author from most recent commit"
+    cd "$current_submission_repo_dir" && commit_user_name="$(git log -1 | grep Author | cut -d "<" -f 1 | cut -c 9-)" && cd - || abort "unable to extract author from most recent commit"
     echo "identified user $commit_user_name based on latest commit user"
 done
 
