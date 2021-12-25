@@ -10,10 +10,20 @@ abort() {
 project_root="$PWD"
 [[ "$project_root" == *assignment-test ]] || abort "please run this script from the repository root"
 submission_repos_root="$project_root/submissions"
+build_root="$project_root/build"
 
 source ./assignment.conf
 
 # setup wraps
+wrap_cmake_file="$submission_repos_root/wraps.cmake"
+echo "generating compiler options for function wrapping"
+echo "# automatically generated wrap compiler options based on assignment.conf, which should be edited instead of this file" > "$wrap_cmake_file"
+linker_flags="-Wl"
+for func in "${wrap_functions[@]}"; do
+    echo "adding wrapping for $func"
+    linker_flags="$linker_flags,--wrap=$func"
+done
+echo "set(BIN_COMPILE_OPTIONS \${BIN_COMPILE_OPTIONS} $linker_flags)" >> "$wrap_cmake_file"
 
 # gather all available zip files
 submission_zips=()

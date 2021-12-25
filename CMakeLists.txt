@@ -32,7 +32,7 @@ set(LIBRARIES
 # options for bin
 if(${DEBUG_BUILD})
     set(BIN_COMPILE_OPTIONS
-        -DHAX_DEBUG
+        -DDEBUG_BUILD
         -O0
         -g
     )
@@ -57,6 +57,8 @@ set(BIN_COMPILE_OPTIONS
     -Wmissing-prototypes
     -Wmissing-format-attribute
 )
+
+include(submissions/wraps.cmake)
 
 add_subdirectory(src)
 
