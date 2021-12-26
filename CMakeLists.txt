@@ -59,6 +59,7 @@ set(BIN_COMPILE_OPTIONS
 )
 
 include(submissions/wraps.cmake)
+include(submissions/submission.cmake)
 
 add_subdirectory(src)
 

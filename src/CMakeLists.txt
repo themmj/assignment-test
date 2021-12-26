@@ -2,9 +2,6 @@ set (SRC_FILES
     main.c
 )
 
-set (APP_SRC_FILES
-)
-
 add_executable(${BINARY} ${SRC_FILES} ${APP_SRC_FILES})
 
 target_include_directories(${BINARY} PUBLIC
