@@ -16,6 +16,10 @@ target_compile_options(${BINARY} PUBLIC
     ${BIN_COMPILE_OPTIONS}
 )
 
+target_link_options(${BINARY} PUBLIC
+    ${BIN_LINK_OPTIONS}
+)
+
 set_target_properties(
     ${BINARY} PROPERTIES
 

@@ -29,7 +29,7 @@ for func in "${wrap_functions[@]}"; do
     echo "adding wrapping for $func"
     linker_flags="$linker_flags,--wrap=$func"
 done
-echo "set(BIN_COMPILE_OPTIONS \${BIN_COMPILE_OPTIONS} $linker_flags)" >> "$wrap_cmake_file"
+echo "set(BIN_LINK_OPTIONS $linker_flags)" >> "$wrap_cmake_file"
 
 # gather all available zip files
 submission_zips=()
@@ -60,7 +60,9 @@ for zip_file in "${submission_zips[@]}"; do
     echo "writing include dirs and submission source files to $submission_cmake_file"
     echo "# automatically generated include dirs and application files based on assignment.conf, which should be edited instead of this file" > "$submission_cmake_file"
     for file in "${assignment_source_files[@]}"; do
-        submission_files+=("$current_submission_repo_dir/$file")
+        full_file="$current_submission_repo_dir/$file"
+        [[ "$full_file" == */main.c ]] && [ -f $full_file ] && sed -i 's/ *int *main *.int/int assignment_main(int/' "$full_file"
+        submission_files+=("$full_file")
     done
     echo "set(APP_SRC_FILES ${submission_files[*]})" >> "$submission_cmake_file"
     echo "set(INCLUDE_DIRS \$INCLUDE_DIRS $current_submission_repo_dir)" >> "$submission_cmake_file"

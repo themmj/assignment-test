@@ -51,10 +51,10 @@ set(BIN_COMPILE_OPTIONS
     -Wpedantic
     -Wconversion
     -Wcast-align
-    -Wunused
+    -Wno-unused # TODO reintroduce this as soon as they had functions
     -Wshadow
     -Wformat-security
-    -Wmissing-prototypes
+    -Wno-missing-prototypes # TODO fix assignment main not finding assignment_start.h
     -Wmissing-format-attribute
 )
 
