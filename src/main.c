@@ -22,7 +22,7 @@ void __wrap_dhbw_print_line(const char* text) {
 
 static void test_print_call(void **state)
 {
-    (void) state;
+    UNUSED(state);
     expect_string(__wrap_dhbw_print_line, text, "Hello, two-user!");
 
     CALL_ASSIGNMENT_MAIN("main");
