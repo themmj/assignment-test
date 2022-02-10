@@ -4,16 +4,15 @@
 #include <stddef.h>
 #include <cmocka.h>
 #include "assignment_start.h"
+#include "wrap.h"
+
 #define UNUSED(x) (void)x
 
 /* MOCKS */
 
 #include ".assignment/dhbw.h"
 
-void __real_dhbw_print_line(const char* text);
-void __wrap_dhbw_print_line(const char* text);
-
-void __wrap_dhbw_print_line(const char* text) {
+FUNC_WRAPPER(void, dhbw_print_line(const char* text)) {
     check_expected_ptr(text);
     __real_dhbw_print_line(text);
 }
