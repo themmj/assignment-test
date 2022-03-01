@@ -22,7 +22,7 @@ The headers and cmake are configured in a way which renames the `main` function 
 
 ### Function wrapping
 
-Using `ld`'s wrapper support one can define `__wrap_symbol` as a wrapper function for `symbol`. Any undefined reference to `symbol` will be linked against that wrapper. Calling `__real_symbol` will invoke the normal definition of `symbol`. Because every symbol intended for wrapping has to be passed to the linker manually the [configuration](#configuration) contains a variable containing all symbol names that should be wrapped. The rest is done automatically.
+Using `ld`'s wrapper support one can define `__wrap_symbol` as a wrapper function for `symbol`. Any undefined reference to `symbol` will be linked against that wrapper. Calling `__real_symbol` will invoke the normal definition of `symbol`. Because every symbol intended for wrapping has to be passed to the linker manually the [configuration](#configuration) contains a variable containing all symbol names that should be wrapped. The rest is done automatically. Defining a wrapper function can easily be done with the `FUNC_WRAPPER` macro.
 
 ### Git user extraction
 
