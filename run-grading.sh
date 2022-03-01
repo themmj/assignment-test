@@ -40,7 +40,7 @@ echo "processing ${#submission_zips[@]} submissions"
 
 # output of results
 output=()
-output+=("github_name $delimiter score $delimiter error_output")
+output+=("folder $delimiter github_name $delimiter score $delimiter error_output")
 
 # loop over all zips
 current_submission=0
@@ -93,7 +93,7 @@ for zip_file in "${submission_zips[@]}"; do
     
     # remove new lines from error output
     error_output=$(echo "$error_output" | tr -d \\n)
-    output+=("$commit_user_name$delimiter$test_result$delimiter$error_output")
+    output+=("$current_submission_repo_dir$delimiter$commit_user_name$delimiter$test_result$delimiter$error_output")
 done
 
 # output results to file and stdout
