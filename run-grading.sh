@@ -52,11 +52,11 @@ for zip_file in "${submission_zips[@]}"; do
 
     echo "moving zip contents to $current_submission_repo_dir"
     mkdir -p "$current_submission_repo_dir"
-    unzip -fo "$zip_file" -d "$current_submission_repo_dir" > /dev/null
+    unzip -o "$zip_file" -d "$current_submission_repo_dir" > /dev/null
     [ $? -eq 0 ] || abort "error during unzipping of submission"
 
     # setup appication sources
-    ln -S "$current_submission_repo_dir/assignment_setup.h"
+    cd src && ln -sf "$current_submission_repo_dir/assignment_setup.h" && cd .. || abort "could not link submissions assignment_setup.h"
     submission_files=()
     submission_cmake_file="$submission_repos_root/submission.cmake"
     echo "writing include dirs and submission source files to $submission_cmake_file"
