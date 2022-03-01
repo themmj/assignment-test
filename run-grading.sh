@@ -11,7 +11,8 @@ delimiter='\t'
 
 # assert pwd to be repository root
 project_root="$PWD"
-[[ "$project_root" == *assignment-test ]] || abort "please run this script from the repository root"
+[ -f "$project_root/assignment.conf" ] || abort "please run this script from the repository root"
+[ -f "$project_root/run-grading.sh" ] || abort "please run this script from the repository root"
 submission_repos_root="$project_root/submissions"
 build_root="$project_root/build"
 
