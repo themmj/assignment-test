@@ -1,6 +1,6 @@
 # assignment grading automation
 
-Automatically run tests on a set of submissions for a programming assignment.
+Automatically run tests on a set of submissions for a programming assignment. Assignments should be based on [assignment-template](https://github.com/themmj/assignment-template).
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ The individual testcases for an assignment are defined using [CMocka](https://ap
 
 ### Execute the submission's `main`
 
-The grading script renames the `main` function inside the submission's `main.c` so it can be called with `CALL_ASSIGNMENT_MAIN` inside a test case, passing a variable number of arguments.
+The headers and cmake are configured in a way which renames the `main` function inside the submission's `main.c` when running the tests. This way it can be called with `CALL_ASSIGNMENT_MAIN` inside a test case, passing a variable number of arguments.
 
 ### Function wrapping
 
