@@ -19,8 +19,7 @@ FUNC_WRAPPER(void, dhbw_print_line(const char* text)) {
 
 /* TESTS */
 
-static void test_print_call(void **state)
-{
+static void test_print_call(void **state) {
     UNUSED(state);
     expect_string(__wrap_dhbw_print_line, text, "Hello, two-user!");
 
@@ -29,8 +28,7 @@ static void test_print_call(void **state)
 
 /* MAIN */
 
-int main(int argc, char** argv)
-{
+int main(int argc, const char *argv[]) {
     UNUSED(argc);
     UNUSED(argv);
     const struct CMUnitTest tests[] =
@@ -40,4 +38,3 @@ int main(int argc, char** argv)
 
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
-

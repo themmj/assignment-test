@@ -44,18 +44,19 @@ endif()
 
 set(BIN_COMPILE_OPTIONS
     ${BIN_COMPILE_OPTIONS}
-    -std=c99
+    -std=c17
     -Wall
     -Werror
     -Wextra
     -Wpedantic
     -Wconversion
     -Wcast-align
-    -Wno-unused # TODO reintroduce this as soon as they had functions
+    -Wno-unused # TODO reintroduce this and make UNUSED macro available?
     -Wshadow
     -Wformat-security
-    -Wno-missing-prototypes # TODO fix assignment main not finding assignment_start.h
+    -Wmissing-prototypes
     -Wmissing-format-attribute
+    -D_ASSIGNMENT_RUNNING_TESTS
 )
 
 include(submissions/wraps.cmake)

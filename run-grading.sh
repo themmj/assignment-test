@@ -51,17 +51,19 @@ for zip_file in "${submission_zips[@]}"; do
 
     echo "moving zip contents to $current_submission_repo_dir"
     mkdir -p "$current_submission_repo_dir"
-    unzip "$zip_file" -d "$current_submission_repo_dir" > /dev/null
+    unzip -fo "$zip_file" -d "$current_submission_repo_dir" > /dev/null
     [ $? -eq 0 ] || abort "error during unzipping of submission"
 
     # setup appication sources
+    ln -S "$current_submission_repo_dir/assignment_setup.h"
     submission_files=()
     submission_cmake_file="$submission_repos_root/submission.cmake"
     echo "writing include dirs and submission source files to $submission_cmake_file"
     echo "# automatically generated include dirs and application files based on assignment.conf, which should be edited instead of this file" > "$submission_cmake_file"
     for file in "${assignment_source_files[@]}"; do
         full_file="$current_submission_repo_dir/$file"
-        [[ "$full_file" == */main.c ]] && [ -f $full_file ] && sed -i 's/ *int *main *.int/int assignment_main(int/' "$full_file"
+        # File content replacements could be done here following the below format
+        # [[ "$full_file" == */main.c ]] && [ -f $full_file ] && sed -i 's/ *int *main *.int/int assignment_main(int/' "$full_file"
         submission_files+=("$full_file")
     done
     echo "set(APP_SRC_FILES ${submission_files[*]})" >> "$submission_cmake_file"
