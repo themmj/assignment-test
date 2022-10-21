@@ -10,11 +10,6 @@ set(BINARY assignment-test)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/out)
 set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/third-party)
 
-# helper to add third party cmake file
-macro(add_extern_directory)
-    add_subdirectory(${THIRD_PARTY_DIR}/${ARGV0} third-party/${ARGV0})
-endmacro()
-
 # add cmocka
 include(${THIRD_PARTY_DIR}/FetchCMocka.cmake)
 

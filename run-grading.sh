@@ -96,6 +96,7 @@ for zip_file in "${submission_zips[@]}"; do
     
     # remove new lines from error output
     error_output=$(echo "$error_output" | tr -d \\n)
+    echo "$error_output" > "$current_submission_repo_dir/err.log"
     output+=("$current_submission_repo_dir$delimiter$commit_user_name$delimiter$test_result$delimiter$error_output")
 done
 
