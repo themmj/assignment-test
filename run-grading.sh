@@ -30,7 +30,7 @@ for func in "${wrap_functions[@]}"; do
     echo "adding wrapping for $func"
     linker_flags="$linker_flags,--wrap=$func"
 done
-echo "set(BIN_LINK_OPTIONS $linker_flags)" >> "$wrap_cmake_file"
+[ "$linker_flags" = "-Wl" ] || echo "set(BIN_LINK_OPTIONS $linker_flags)" >> "$wrap_cmake_file"
 
 # gather all available zip files
 submission_zips=()
@@ -56,7 +56,6 @@ for zip_file in "${submission_zips[@]}"; do
     [ $? -eq 0 ] || abort "error during unzipping of submission"
 
     # setup appication sources
-    cd src && ln -sf "$current_submission_repo_dir/assignment_setup.h" && cd .. || abort "could not link submissions assignment_setup.h"
     submission_files=()
     submission_cmake_file="$submission_repos_root/submission.cmake"
     echo "writing include dirs and submission source files to $submission_cmake_file"
@@ -64,7 +63,7 @@ for zip_file in "${submission_zips[@]}"; do
     for file in "${assignment_source_files[@]}"; do
         full_file="$current_submission_repo_dir/$file"
         # File content replacements could be done here following the below format
-        # [[ "$full_file" == */main.c ]] && [ -f $full_file ] && sed -i 's/ *int *main *.int/int assignment_main(int/' "$full_file"
+        [[ "$full_file" == */main.c ]] && [ -f $full_file ] && sed -i 's/ *int *main *.int/int assignment_main(int argc, const char *argv[]);int assignment_main(int/' "$full_file"
         submission_files+=("$full_file")
     done
     echo "set(APP_SRC_FILES ${submission_files[*]})" >> "$submission_cmake_file"
