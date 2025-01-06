@@ -6,6 +6,30 @@ abort() {
     exit 1
 }
 
+skip_unzip=0
+single_submission=""
+# init arguments
+for arg in "$@"; do
+    case "$arg" in
+        "-su")
+            skip_unzip=1
+            ;;
+        *)
+            IFS='='
+            read -ra split <<< "$arg"
+            case "${split[0]}" in
+                "--submission")
+                    single_submission="${split[1]}"
+                    ;;
+                *)
+                    abort "unknow option $arg"
+                    ;;
+            esac
+            IFS=' '
+            ;;
+    esac
+done
+
 # delimiter used in csv
 delimiter='\t'
 
@@ -41,7 +65,7 @@ echo "processing ${#submission_zips[@]} submissions"
 
 # output of results
 output=()
-output+=("folder $delimiter github_name $delimiter score $delimiter error_output")
+output+=("folder $delimiter zip $delimiter github_name $delimiter score $delimiter error_output")
 
 # loop over all zips
 current_submission=0
@@ -50,10 +74,16 @@ for zip_file in "${submission_zips[@]}"; do
     current_submission_repo_dir="$submission_repos_root/$current_submission"
     ((current_submission++))
 
-    echo "moving zip contents to $current_submission_repo_dir"
-    mkdir -p "$current_submission_repo_dir"
-    unzip -o "$zip_file" -d "$current_submission_repo_dir" > /dev/null
-    [ $? -eq 0 ] || abort "error during unzipping of submission"
+    # in case a single submission is requested, skip all others
+    [ -n "$single_submission" ] && [ "$single_submission" != "$(basename $current_submission_repo_dir)" ] && continue
+
+    # skip unzipping step if desired
+    if [ $skip_unzip -eq 0 ]; then
+        echo "moving zip contents to $current_submission_repo_dir"
+        mkdir -p "$current_submission_repo_dir"
+        unzip -o "$zip_file" -d "$current_submission_repo_dir" > /dev/null
+        [ $? -eq 0 ] || abort "error during unzipping of submission"
+    fi
 
     # setup appication sources
     submission_files=()
@@ -82,7 +112,7 @@ for zip_file in "${submission_zips[@]}"; do
     cd "$build_root"
     make_output=$(make 2>&1 > /dev/null)
     if [ $? -eq 0 ]; then
-        # build successfull. run tests and calculate score
+        # build successful. run tests and calculate score
         test_err_output="$(../out/assignment-test 2>&1 > /dev/null)"
         num_correct_tests=$(($max_points - $?))
         test_result=$((num_correct_tests * 100 / $max_points))
@@ -96,11 +126,11 @@ for zip_file in "${submission_zips[@]}"; do
     # remove new lines from error output
     error_output=$(echo "$error_output" | tr -d \\n)
     echo "$error_output" > "$current_submission_repo_dir/err.log"
-    output+=("$current_submission_repo_dir$delimiter$commit_user_name$delimiter$test_result$delimiter$error_output")
+    output+=("$current_submission_repo_dir$delimiter$zip_file$delimiter$commit_user_name$delimiter$test_result$delimiter$error_output")
 done
 
 # output results to file and stdout
-result_file="$submission_repos_root/result.csv"
+[ -n "$single_submission" ] && result_file="$submission_repos_root/$single_submission-result.csv" || result_file="$submission_repos_root/result.csv"
 > "$result_file"
 echo ""
 echo "Results:"
@@ -109,4 +139,3 @@ for line in "${output[@]}"; do
     echo -e "$line" >> "$result_file"
 done
 echo "results have also been written to $result_file"
-

@@ -45,3 +45,7 @@ The assignment configuration resides in `./assignment.conf`. The individual para
 - `wrap_functions` (array of strings) symbols which should be wrapped during linking
 - `assignment_source_files` (array of strings) list of source files contained in each assignment (relative to the root of the submission repository)
 
+## CLI options
+
+- `-su` skip unzip. For the general use case: run the script once without this option and then always with this option. This allows you to edit the submissions code and rerun the tests without overwriting these edits with the zip content.
+- `--submission=NR` run a single submission. Replace NR with the submission folder's number you want to run. E.g. `--submission=0` to run the first submission.
