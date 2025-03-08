@@ -11,9 +11,9 @@ FetchContent_Declare(
   GIT_SHALLOW    1
 )
 
-# We want to link to cmocka-static, so we need to set this option before calling the FetchContent_MakeAvailable
+# We want to link to cmocka (non static), so we need to set this option before calling the FetchContent_MakeAvailable
 # We also don't care about example and tests
-set(WITH_STATIC_LIB ON CACHE BOOL "CMocka: Build with a static library" FORCE)
+set(WITH_STATIC_LIB OFF CACHE BOOL "CMocka: Build with a static library" FORCE)
 set(WITH_CMOCKERY_SUPPORT OFF CACHE BOOL "CMocka: Install a cmockery header" FORCE)
 set(WITH_EXAMPLES OFF CACHE BOOL "CMocka: Build examples" FORCE)
 set(UNIT_TESTING OFF CACHE BOOL "CMocka: Build with unit testing" FORCE)

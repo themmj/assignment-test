@@ -21,7 +21,7 @@ set(INCLUDE_DIRS
 
 # libraries
 set(LIBRARIES
-    cmocka-static
+    cmocka
 )
 
 # options for bin
