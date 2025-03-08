@@ -1,5 +1,8 @@
 #pragma once
 
+#define WRAP_FUNC_DECL(return_type, remaining_signature) return_type __wrap_##remaining_signature
+#define REAL_FUNC_DECL(return_type, remaining_signature) return_type __real_##remaining_signature
+
 /**
  * \brief Generate function wrapper.
  *
@@ -14,8 +17,7 @@
  * implementation can still be called inside the test with __real_print.
  * See the cmocka referece for potential use cases of this.
  */
-#define FUNC_WRAPPER(return_type,remaining_signature)\
-    return_type __real_##remaining_signature;\
-    return_type __wrap_##remaining_signature;\
-    return_type __wrap_##remaining_signature
-
+#define FUNC_WRAPPER(return_type, remaining_signature) \
+    REAL_FUNC_DECL(return_type, remaining_signature); \
+    WRAP_FUNC_DECL(return_type, remaining_signature); \
+    WRAP_FUNC_DECL(return_type, remaining_signature)
