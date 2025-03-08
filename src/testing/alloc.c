@@ -1,7 +1,7 @@
-#include "testing/common.h"
-
 #include <memory.h>
 #include <stdlib.h>
+
+#include "testing/common.h"
 
 static const unsigned char block_pad[] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF,
@@ -11,7 +11,7 @@ static const unsigned char block_pad[] = {
 
 // functions wrapped further down
 REAL_FUNC_DECL(void *, malloc(size_t size));
-REAL_FUNC_DECL(void, free(void* ptr));
+REAL_FUNC_DECL(void, free(void *ptr));
 
 static void *create_block(size_t size) {
     unsigned char *in = __real_malloc(size + PAD_LENGTH * 2);
@@ -35,13 +35,13 @@ static void free_block(void *input) {
 static struct {
     unsigned int past_leaks;
     unsigned int count;
-    size_t sizes[MAX_ALLOCS];
-    void *ptrs[MAX_ALLOCS];
+    size_t       sizes[MAX_ALLOCS];
+    void        *ptrs[MAX_ALLOCS];
 } allocations;
 
 static void add_alloc(void *addr, size_t size) {
     assert_in_range(allocations.count, 0, MAX_ALLOCS);
-    allocations.sizes[allocations.count] = size;
+    allocations.sizes[allocations.count]  = size;
     allocations.ptrs[allocations.count++] = addr;
 }
 
@@ -51,7 +51,7 @@ static size_t remove_alloc(void *addr) {
             size_t ret = allocations.sizes[i];
             --allocations.count;
             for (unsigned int j = i; j < allocations.count; ++j) {
-                allocations.ptrs[j] = allocations.ptrs[j + 1];
+                allocations.ptrs[j]  = allocations.ptrs[j + 1];
                 allocations.sizes[j] = allocations.sizes[j + 1];
             }
             check_block_integrity(addr, ret);
@@ -63,9 +63,7 @@ static size_t remove_alloc(void *addr) {
     return 0;
 }
 
-static void accept_past_leaks(void) {
-    allocations.past_leaks = allocations.count;
-}
+static void accept_past_leaks(void) { allocations.past_leaks = allocations.count; }
 
 static void check_mem_integrity(void) {
     for (unsigned int i = allocations.past_leaks; i < allocations.count; ++i) {
@@ -111,7 +109,7 @@ FUNC_WRAPPER(void *, realloc(void *old, size_t size)) {
     return __wrap_malloc(size);
 }
 
-FUNC_WRAPPER(void, free(void* ptr)) {
+FUNC_WRAPPER(void, free(void *ptr)) {
     if (!alloc_checks_enabled) {
         __real_free(ptr);
         return;
@@ -150,6 +148,4 @@ int alloc_checks_test_teardown(void **state) {
     return 0;
 }
 
-unsigned int leftover_mem_blocks(void) {
-    return allocations.count;
-}
+unsigned int leftover_mem_blocks(void) { return allocations.count; }
