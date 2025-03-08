@@ -97,7 +97,7 @@ for zip_file in "${submission_zips[@]}"; do
         submission_files+=("$full_file")
     done
     echo "set(APP_SRC_FILES ${submission_files[*]})" >> "$submission_cmake_file"
-    echo "set(INCLUDE_DIRS \$INCLUDE_DIRS $current_submission_repo_dir)" >> "$submission_cmake_file"
+    echo "set(INCLUDE_DIRS \${INCLUDE_DIRS} $current_submission_repo_dir)" >> "$submission_cmake_file"
 
     # extract git user
     cd "$current_submission_repo_dir" && commit_user_name="$(git log -1 | grep Author | cut -d "<" -f 1 | cut -c 9-)" && cd - || abort "unable to extract author from most recent commit"
