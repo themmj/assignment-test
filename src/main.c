@@ -3,8 +3,8 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include <cmocka.h>
-#include "assignment_start.h"
-#include "wrap.h"
+#include "testing/assignment_main.h"
+#include "testing/wrap.h"
 
 #define UNUSED(x) (void)x
 
