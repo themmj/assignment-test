@@ -114,8 +114,7 @@ for zip_file in "${submission_zips[@]}"; do
     if [ $? -eq 0 ]; then
         # build successful. run tests and calculate score
         test_err_output="$(../out/assignment-test 2>&1 > /dev/null)"
-        num_correct_tests=$(($max_points - $?))
-        test_result=$((num_correct_tests * 100 / $max_points))
+        test_result=$?
         [ $test_result -ne 100 ] && error_output="$test_err_output"
     else
         echo "error during compilation"

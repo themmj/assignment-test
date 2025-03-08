@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "testing/common.h"
 
@@ -28,7 +29,14 @@ static const struct CMUnitTest tests[] =
 /* MAIN */
 
 int main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    // run tests
+    disable_alloc_checks();
+    int test_failures = cmocka_run_group_tests(tests, NULL, NULL);
+    enable_alloc_checks();
+    test_failures += cmocka_run_group_tests(tests, NULL, NULL);
+    fprintf(stderr, "\n%u leftover mem blocks\n", leftover_mem_blocks());
+
+    // calculate score
+    const int test_count = sizeof(tests) / sizeof(tests[0]) * 2;
+    return 100 - (100 * test_failures / test_count);
 }
