@@ -46,6 +46,10 @@ mkdir -p "$build_root"
 source ./assignment.conf
 
 # setup wraps
+wrap_functions+=("malloc") # default wrap functions for alloc checking
+wrap_functions+=("calloc")
+wrap_functions+=("realloc")
+wrap_functions+=("free" )
 wrap_cmake_file="$submission_repos_root/wraps.cmake"
 echo "generating compiler options for function wrapping in $wrap_cmake_file"
 echo "# automatically generated wrap compiler options based on assignment.conf, which should be edited instead of this file" > "$wrap_cmake_file"
