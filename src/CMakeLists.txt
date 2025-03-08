@@ -1,5 +1,6 @@
 set (SRC_FILES
     main.c
+    testing/alloc.c
 )
 
 add_executable(${BINARY} ${SRC_FILES} ${APP_SRC_FILES})

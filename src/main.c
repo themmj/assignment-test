@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-#include "testing/cmocka.h"
-#include "testing/assignment_main.h"
-#include "testing/wrap.h"
+#include "testing/common.h"
 
 /* MOCKS */
 
@@ -22,15 +20,15 @@ static void test_print_call(void **state) {
     CALL_ASSIGNMENT_MAIN("main");
 }
 
+static const struct CMUnitTest tests[] =
+{
+    TEST_CASE(test_print_call),
+};
+
 /* MAIN */
 
 int main(int argc, const char *argv[]) {
     UNUSED(argc);
     UNUSED(argv);
-    const struct CMUnitTest tests[] =
-    {
-        cmocka_unit_test(test_print_call),
-    };
-
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

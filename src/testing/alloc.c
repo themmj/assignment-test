@@ -1,7 +1,7 @@
-#include "testing/alloc.h"
+#include "testing/common.h"
 
-#include "testing/cmocka.h"
-#include "testing/wrap.h"
+#include <memory.h>
+#include <stdlib.h>
 
 static const unsigned char block_pad[] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF,
