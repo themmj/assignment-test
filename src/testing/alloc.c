@@ -73,19 +73,30 @@ static void check_mem_integrity(void) {
     }
 }
 
+static int alloc_checks_enabled = 0;
+
 FUNC_WRAPPER(void *, malloc(size_t size)) {
+    if (!alloc_checks_enabled) {
+        return __real_malloc(size);
+    }
     void *ret = create_block(size);
     add_alloc(ret, size);
     return ret;
 }
 
 FUNC_WRAPPER(void *, calloc(size_t n, size_t size)) {
+    if (!alloc_checks_enabled) {
+        return __real_calloc(n, size);
+    }
     void *ret = create_block(n * size);
     add_alloc(ret, n * size);
     return ret;
 }
 
 FUNC_WRAPPER(void *, realloc(void *old, size_t size)) {
+    if (!alloc_checks_enabled) {
+        return __real_realloc(old, size);
+    }
     if (!size) {
         free(old);
     } else if (old) {
@@ -100,19 +111,38 @@ FUNC_WRAPPER(void *, realloc(void *old, size_t size)) {
 }
 
 FUNC_WRAPPER(void, free(void* ptr)) {
+    if (!alloc_checks_enabled) {
+        __real_free(ptr);
+    }
     if (ptr) {
         remove_alloc(ptr);
         free_block(ptr);
     }
 }
 
+void enable_alloc_checks(void) {
+    alloc_checks_enabled = 1;
+}
+
+void disable_alloc_checks(void) {
+    alloc_checks_enabled = 0;
+}
+
+unsigned int leftover_mem_blocks(void) {
+    return allocations.count;
+}
+
 int alloc_checks_test_setup(void **state) {
     UNUSED(state);
-    accept_past_leaks();
+    if (alloc_checks_enabled) {
+        accept_past_leaks();
+    }
     return 0;
 }
 int alloc_checks_test_teardown(void **state) {
     UNUSED(state);
-    check_mem_integrity();
+    if (alloc_checks_enabled) {
+        check_mem_integrity();
+    }
     return 0;
 }
