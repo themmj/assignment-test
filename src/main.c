@@ -4,8 +4,6 @@
 #include "testing/assignment_main.h"
 #include "testing/wrap.h"
 
-#define UNUSED(x) (void)x
-
 /* MOCKS */
 
 #include ".assignment/dhbw.h"
