@@ -40,11 +40,11 @@ int assignment_main(int argc, const char *argv[]);
 
 /// allocation checking (leaks and integrity)
 #define MAX_ALLOCS 8192
-void enable_alloc_checks(void);
-void disable_alloc_checks(void);
-unsigned int leftover_mem_blocks(void);
+int enable_alloc_checks(void **state);
+int disable_alloc_checks(void **state);
 int alloc_checks_test_setup(void **state);
 int alloc_checks_test_teardown(void **state);
+unsigned int leftover_mem_blocks(void);
 
 /// for use as element in CMUnitTest array
 #define TEST_CASE(func) cmocka_unit_test_setup_teardown(func, alloc_checks_test_setup, alloc_checks_test_teardown)

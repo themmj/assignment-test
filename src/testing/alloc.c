@@ -99,6 +99,7 @@ FUNC_WRAPPER(void *, realloc(void *old, size_t size)) {
     }
     if (!size) {
         free(old);
+        return NULL;
     } else if (old) {
         void *ret = create_block(size);
         add_alloc(ret, size);
@@ -113,6 +114,7 @@ FUNC_WRAPPER(void *, realloc(void *old, size_t size)) {
 FUNC_WRAPPER(void, free(void* ptr)) {
     if (!alloc_checks_enabled) {
         __real_free(ptr);
+        return;
     }
     if (ptr) {
         remove_alloc(ptr);
@@ -120,16 +122,16 @@ FUNC_WRAPPER(void, free(void* ptr)) {
     }
 }
 
-void enable_alloc_checks(void) {
+int enable_alloc_checks(void **state) {
+    UNUSED(state);
     alloc_checks_enabled = 1;
+    return 0;
 }
 
-void disable_alloc_checks(void) {
+int disable_alloc_checks(void **state) {
+    UNUSED(state);
     alloc_checks_enabled = 0;
-}
-
-unsigned int leftover_mem_blocks(void) {
-    return allocations.count;
+    return 0;
 }
 
 int alloc_checks_test_setup(void **state) {
@@ -139,10 +141,15 @@ int alloc_checks_test_setup(void **state) {
     }
     return 0;
 }
+
 int alloc_checks_test_teardown(void **state) {
     UNUSED(state);
     if (alloc_checks_enabled) {
         check_mem_integrity();
     }
     return 0;
+}
+
+unsigned int leftover_mem_blocks(void) {
+    return allocations.count;
 }
