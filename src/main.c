@@ -1,8 +1,6 @@
 #include <stdio.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <stddef.h>
-#include <cmocka.h>
+
+#include "testing/cmocka.h"
 #include "testing/assignment_main.h"
 #include "testing/wrap.h"
 
