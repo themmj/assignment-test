@@ -30,7 +30,8 @@ Extracts git user name from the latest commit to combat blatant copy/pasting of 
 
 ### Score calculation
 
-The score for a submission is calculated using the test results and the maximum points defined in the [configuration](#configuration). A build error counts as 0%. In case a submission does not achieve 100% its test failures or build errors are preserved for manual investigation if needed.
+The score for a submission is calculated using the inverse of the ratio of failed tests vs. total tests.
+A build error counts as 0%. In case a submission does not achieve 100% its test failures or build errors are preserved for manual investigation if needed.
 
 ### CSV export
 
@@ -40,7 +41,6 @@ The results are written to stdout and a result file in a CSV format using tabs a
 
 The assignment configuration resides in `./assignment.conf`. The individual paramteres stand for the following:
 
-- `max_points` (integer): represents the number of testcases defined for the assignment
 - `submission_zips_location` (string) absolute or relative path to all the submissions
 - `wrap_functions` (array of strings) symbols which should be wrapped during linking
 - `assignment_source_files` (array of strings) list of source files contained in each assignment (relative to the root of the submission repository)
