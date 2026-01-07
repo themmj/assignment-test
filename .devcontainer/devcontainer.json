@@ -3,18 +3,27 @@
     "build": {
     "dockerfile": "Dockerfile"
     },
-    "settings": {},
-    "extensions": [
-        "ms-vscode.cpptools",
-        "jeff-hykin.better-cpp-syntax",
-        "streetsidesoftware.code-spell-checker",
-        "ibm.output-colorizer",
-        "cschlosser.doxdocgen",
-        "ms-vscode.cpptools-themes",
-        "notskm.clang-tidy",
-        "gruntfuggly.todo-tree",
-        "matepek.vscode-catch2-test-adapter"
-        ],
-
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "debug.onTaskErrors": "abort",
+                "extensions.ignoreRecommendations": true,
+                "cSpell.diagnosticLevel": "Hint",
+                "cSpell.ignoreWords": ["dhbw"],
+                "chat.disableAIFeatures": true,
+                "workbench.secondarySideBar.defaultVisibility": "hidden"
+            },
+            "extensions": [
+                "ms-vscode.cpptools",
+                "jeff-hykin.better-cpp-syntax",
+                "streetsidesoftware.code-spell-checker",
+                "ibm.output-colorizer",
+                "cschlosser.doxdocgen",
+                "ms-vscode.cpptools-themes",
+                "notskm.clang-tidy",
+                "gruntfuggly.todo-tree"
+            ]
+        }
+    },
     "remoteUser": "vscode"
 }
